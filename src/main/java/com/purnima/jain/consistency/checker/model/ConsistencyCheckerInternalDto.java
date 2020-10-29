@@ -7,15 +7,13 @@ import lombok.Data;
 
 @Data
 public class ConsistencyCheckerInternalDto {
-	
+
 	private String customerId;
-	
+
 	private ConsistencyCheckerInternalCustomer mySqlCustomer;
-	
+
 	private ConsistencyCheckerInternalCustomer cassandraCustomer;
-	
+
 	private List<ConsistencyCheckerInternalDiscrepancyDto> discrepancyList = new ArrayList<>();
-	
-	
 
 }

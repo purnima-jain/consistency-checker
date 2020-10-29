@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CassandraPhone {
-	
+
 	private String phoneType;
 	private String phoneNumber;
-	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime lastUpdated;
-	
+
 }

@@ -15,29 +15,29 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ConsistencyCheckerInternalEmail {
-	
+
 	private String emailType;
 	private String emailAddress;
-	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime lastUpdated;
-	
-	public static Boolean compareLists(List<ConsistencyCheckerInternalEmail> emailsMySqlList, List<ConsistencyCheckerInternalEmail> emailsCassandraList) {		
+
+	public static Boolean compareLists(List<ConsistencyCheckerInternalEmail> emailsMySqlList, List<ConsistencyCheckerInternalEmail> emailsCassandraList) {
 		Boolean isEquals = Boolean.TRUE;
-		
-		if(emailsMySqlList == null && emailsCassandraList != null) {
-			isEquals = Boolean.FALSE;			
-		} else if(emailsMySqlList != null && emailsCassandraList == null) {
+
+		if (emailsMySqlList == null && emailsCassandraList != null) {
 			isEquals = Boolean.FALSE;
-		} else if(emailsMySqlList.size() != emailsCassandraList.size()) {
-			isEquals = Boolean.FALSE;			
-		} else if(!(emailsMySqlList.containsAll(emailsCassandraList) && emailsCassandraList.containsAll(emailsMySqlList))) {
+		} else if (emailsMySqlList != null && emailsCassandraList == null) {
+			isEquals = Boolean.FALSE;
+		} else if (emailsMySqlList.size() != emailsCassandraList.size()) {
+			isEquals = Boolean.FALSE;
+		} else if (!(emailsMySqlList.containsAll(emailsCassandraList) && emailsCassandraList.containsAll(emailsMySqlList))) {
 			isEquals = Boolean.FALSE;
 		}
-		
-		return isEquals;		
+
+		return isEquals;
 	}
 
 }

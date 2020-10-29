@@ -14,24 +14,24 @@ import com.purnima.jain.consistency.checker.postgres.entity.CustomerConsistencyC
 @Component
 @StepScope
 public class CustomerIdSelectionProcessor implements ItemProcessor<String, CustomerConsistencyCheckerJobSelectionEntity> {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(CustomerIdSelectionProcessor.class);
-	
+
 	@Value("#{stepExecution}")
 	private StepExecution stepExecution;
-	
+
 	@Override
 	public CustomerConsistencyCheckerJobSelectionEntity process(String customerId) throws Exception {
 		logger.debug("Entering CustomerIdSelectionProcessor.process() with customerId:: {}", customerId);
-		
+
 		CustomerConsistencyCheckerJobSelectionEntity customerConsistencyCheckerJobSelectionEntity = new CustomerConsistencyCheckerJobSelectionEntity();
 		customerConsistencyCheckerJobSelectionEntity.setCustomerId(customerId);
 		customerConsistencyCheckerJobSelectionEntity.setProcessingStatusEnum(ProcessingStatusEnum.UNPROCESSED);
-		
+
 		customerConsistencyCheckerJobSelectionEntity.setJobExecutionId(stepExecution.getJobExecutionId());
 		customerConsistencyCheckerJobSelectionEntity.setJobInstanceId(stepExecution.getJobExecution().getJobInstance().getInstanceId());
 		customerConsistencyCheckerJobSelectionEntity.setStepExecutionId(stepExecution.getId());
-		
+
 		logger.debug("Leaving CustomerIdSelectionProcessor.process() with customerConsistencyCheckerJobSelectionEntity:: {}", customerConsistencyCheckerJobSelectionEntity);
 		return customerConsistencyCheckerJobSelectionEntity;
 	}

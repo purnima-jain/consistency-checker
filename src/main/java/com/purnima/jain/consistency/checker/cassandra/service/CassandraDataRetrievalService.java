@@ -16,28 +16,28 @@ import com.purnima.jain.consistency.checker.cassandra.repo.CustomerJsonRepositor
 
 @Service
 public class CassandraDataRetrievalService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(CassandraDataRetrievalService.class);
-	
+
 	@Autowired
 	private CustomerJsonRepository customerJsonRepository;
-	
+
 	public HashMap<String, CassandraCustomer> getCustomersListForCustomerIdList(List<String> customerIdList) {
 		logger.debug("Entering CassandraDataRetrievalService.getCustomersListForCustomerIdList() with customerIdList:: {}", customerIdList);
 		HashMap<String, CassandraCustomer> cassandraCustomerListForCustomerIdMap = new HashMap<>();
-		
-		for(String customerId: customerIdList) {
+
+		for (String customerId : customerIdList) {
 			logger.debug("Retrieving data from Cassandra for customerId: {}", customerId);
-			CustomerJsonEntity customerJsonEntity = customerJsonRepository.findByCustomerId(customerId);
-			logger.debug("Retrieving data from Cassandra customerJsonEntity: {}", customerJsonEntity);
+			CustomerJsonEntity customerJsonEntity = customerJsonRepository.findById(customerId).orElse(null);
+			logger.debug("Cassandra customerJsonEntity: {}", customerJsonEntity);
 			CassandraCustomer cassandraCustomer = convertCustomerJsonToCassandraCustomer(customerJsonEntity.getCustomerJson());
 			cassandraCustomerListForCustomerIdMap.put(customerId, cassandraCustomer);
 		}
-		
+
 		logger.debug("Leaving CassandraDataRetrievalService.getCustomersListForCustomerIdList() with cassandraCustomerListForCustomerIdMap:: {}", cassandraCustomerListForCustomerIdMap);
 		return cassandraCustomerListForCustomerIdMap;
 	}
-	
+
 	private CassandraCustomer convertCustomerJsonToCassandraCustomer(String customerJson) {
 		ObjectMapper mapper = new ObjectMapper();
 		CassandraCustomer cassandraCustomer = null;
@@ -45,7 +45,7 @@ public class CassandraDataRetrievalService {
 			cassandraCustomer = mapper.readValue(customerJson, CassandraCustomer.class);
 		} catch (IOException e) {
 			logger.error("Error parsing Json from Cassandra. Message:: {}", e.getMessage());
-		}	
+		}
 		return cassandraCustomer;
 	}
 

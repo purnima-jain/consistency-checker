@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MySqlEmailInfo {
-	
+
 	private String customerId;
 	private String emailType;
 	private String emailAddress;

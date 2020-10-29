@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MySqlPhoneInfo {
-	
+
 	private String customerId;
 	private String phoneType;
 	private String phoneNumber;

@@ -39,6 +39,7 @@ public class CustomerDataComparisonResultWriter implements ItemWriter<Consistenc
 
 	@Override
 	public void write(List<? extends ConsistencyCheckerInternalDto> consistencyCheckerInternalDtoList) throws Exception {
+		logger.debug("Entering CustomerDataComparisonResultWriter.write()......");
 		for(ConsistencyCheckerInternalDto consistencyCheckerInternalDto : consistencyCheckerInternalDtoList) {
 			for(ConsistencyCheckerInternalDiscrepancyDto consistencyCheckerInternalDiscrepancyDto : consistencyCheckerInternalDto.getDiscrepancyList()) {
 				CustomerConsistencyCheckerJobDiscrepancyEntity customerConsistencyCheckerJobDiscrepancyEntity = new CustomerConsistencyCheckerJobDiscrepancyEntity();

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -88,8 +89,8 @@ public class ConsistencyCheckerController {
 	
 	private LocalDateTime initializeFrom(LocalDateTime from) {
 		if (from == null) {
-			from = LocalDateTime.now().minusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0); // Beginning of yesterday
-			// from = LocalDateTime.parse(defaultFromTimestampAsString, DateTimeFormatter.ISO_LOCAL_DATE_TIME); // Beginning of century
+			// from = LocalDateTime.now().minusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0); // Beginning of yesterday
+			from = LocalDateTime.parse(defaultFromTimestampAsString, DateTimeFormatter.ISO_LOCAL_DATE_TIME); // Beginning of century
 		}
 		return from;
 	}	
@@ -108,6 +109,7 @@ public class ConsistencyCheckerController {
 		
 		// Get the last run.counter from BATCH_JOB_EXECUTION_PARAMS table for the given Job Parameters
 		Long maxRunCounterYetForGivenParameters = getMaxRunCounterYetForGivenParameters(jobParameters);
+		logger.info("maxRunCounterYetForGivenParameters :: {}", maxRunCounterYetForGivenParameters);
 		
 		// If the last run.counter is null
 		if(maxRunCounterYetForGivenParameters == null) {
@@ -118,11 +120,11 @@ public class ConsistencyCheckerController {
 			logger.debug("Job with the given parameters has been executed before.....");
 			JobExecution lastJobExecution = getLastJobExecutionForGivenParametersAndRunCounter(jobParameters, maxRunCounterYetForGivenParameters);
 			
-			if("COMPLETED".equals(lastJobExecution.getExitStatus().getExitCode())) {
-				logger.debug("The previous execution of the Job with the given parameters was successful, hence we need to increase the run.counter.....");
+			if(ExitStatus.COMPLETED.getExitCode().equals(lastJobExecution.getExitStatus().getExitCode())) {
+				logger.debug("The previous execution of the Job with the given parameters was successful, hence we need to increase the run.counter.....");				
 				jobExecution = getNewFreshJobExecutionForGivenParametersWithNextRunCounter(jobParameters, maxRunCounterYetForGivenParameters);
 			}
-			else if("FAILED".equals(lastJobExecution.getExitStatus().getExitCode())) {
+			else if(ExitStatus.FAILED.getExitCode().equals(lastJobExecution.getExitStatus().getExitCode())) {
 				logger.debug("The previous execution of the Job with the given parameters was a failure, hence we need to re-start it's processing.....");
 				jobExecution = getRestartJobExecutionForGivenParametersForTheLastFailedJob(lastJobExecution);
 			}
@@ -135,8 +137,7 @@ public class ConsistencyCheckerController {
 	}
 	
 	private Long getMaxRunCounterYetForGivenParameters(JobParameters jobParameters) {
-		Long maxRunCounterForGivenParameters = springBatchRepository.getMaxRunCounterForGivenParameters(jobParameters);
-		logger.info("maxRunCounterForGivenParameters :: {}", maxRunCounterForGivenParameters);
+		Long maxRunCounterForGivenParameters = springBatchRepository.getMaxRunCounterForGivenParameters(jobParameters);		
 		return maxRunCounterForGivenParameters;
 	}
 	
@@ -174,10 +175,9 @@ public class ConsistencyCheckerController {
 
 	@Scheduled(cron="${cron.expression.everyday.at.midnight}", zone="CET")
 	public void invokeForPeriodOnSchedule() throws Exception {
-		logger.info("Entering ConsistencyCheckerController.invokeForPeriodOnSchedule()..............................................");
+		logger.debug("Entering ConsistencyCheckerController.invokeForPeriodOnSchedule()..............................................");
 		invokeForPeriod(null, null);
-		logger.info("Leaving ConsistencyCheckerController.invokeForPeriodOnSchedule()...............................................");
+		logger.debug("Leaving ConsistencyCheckerController.invokeForPeriodOnSchedule()...............................................");
 	}	
-	
 
 }

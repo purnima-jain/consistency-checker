@@ -119,36 +119,36 @@ public class SecondaryReader implements PageReader<ConsistencyCheckerInternalDto
 		}, executor);		
 	}
 	
-	private void aggregateConsistencyCheckerData(List<ConsistencyCheckerInternalDto> consistencyCheckerInternalDtoList, HashMap<String, MySqlCustomerInfo> mySqlCustomerInfoForCustomerIdMap, 
-			HashMap<String, List<MySqlPhoneInfo>> mySqlPhoneInfoListForCustomerIdMap, HashMap<String, List<MySqlEmailInfo>> mySqlEmailInfoListForCustomerIdMap, 
-			HashMap<String, CassandraCustomer> cassandraCustomerListForCustomerIdMap) {
-		
-		for(ConsistencyCheckerInternalDto consistencyCheckerInternalDto : consistencyCheckerInternalDtoList) {
+	private void aggregateConsistencyCheckerData(List<ConsistencyCheckerInternalDto> consistencyCheckerInternalDtoList,
+			HashMap<String, MySqlCustomerInfo> mySqlCustomerInfoForCustomerIdMap, HashMap<String, List<MySqlPhoneInfo>> mySqlPhoneInfoListForCustomerIdMap,
+			HashMap<String, List<MySqlEmailInfo>> mySqlEmailInfoListForCustomerIdMap, HashMap<String, CassandraCustomer> cassandraCustomerListForCustomerIdMap) {
+
+		for (ConsistencyCheckerInternalDto consistencyCheckerInternalDto : consistencyCheckerInternalDtoList) {
 			String customerId = consistencyCheckerInternalDto.getCustomerId();
-			
+
 			// MySql
 			MySqlCustomerInfo mySqlCustomerInfo = mySqlCustomerInfoForCustomerIdMap.get(customerId);
 			List<MySqlPhoneInfo> mySqlPhoneInfoList = mySqlPhoneInfoListForCustomerIdMap.get(customerId);
-			List<MySqlEmailInfo> mySqlEmailInfoList = mySqlEmailInfoListForCustomerIdMap.get(customerId);			
+			List<MySqlEmailInfo> mySqlEmailInfoList = mySqlEmailInfoListForCustomerIdMap.get(customerId);
 			consistencyCheckerInternalDto.setMySqlCustomer(ConsistencyCheckerMapper.mapMySqlInfosToConsistencyCheckerInternalCustomer(mySqlCustomerInfo, mySqlPhoneInfoList, mySqlEmailInfoList));
-			
+
 			// Cassandra
 			CassandraCustomer cassandraCustomer = cassandraCustomerListForCustomerIdMap.get(customerId);
-			consistencyCheckerInternalDto.setCassandraCustomer(ConsistencyCheckerMapper.mapCassandraCustomerToConsistencyCheckerInternalCustomer(cassandraCustomer));			
+			consistencyCheckerInternalDto.setCassandraCustomer(ConsistencyCheckerMapper.mapCassandraCustomerToConsistencyCheckerInternalCustomer(cassandraCustomer));
 		}
-		
+
 	}
 	
 	private List<String> getCustomerIdList(List<ConsistencyCheckerInternalDto> consistencyCheckerInternalDtoList) {
 		List<String> customerIdList = new ArrayList<>();
-		
-		if(consistencyCheckerInternalDtoList == null || consistencyCheckerInternalDtoList.isEmpty()) 
+
+		if (consistencyCheckerInternalDtoList == null || consistencyCheckerInternalDtoList.isEmpty())
 			return customerIdList;
-		
+
 		customerIdList.addAll(consistencyCheckerInternalDtoList.stream()
 				.map(consistencyCheckerInternalDto -> consistencyCheckerInternalDto.getCustomerId())
 				.collect(Collectors.toList()));
-		
+
 		return customerIdList;
 	}
 }

@@ -14,7 +14,7 @@
 	<artifactId>consistency-checker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>consistency-checker</name>
-	<description>Application to verify the consistency between the data in two databases.</description>
+	<description>Application to verify the consistency between the data in two databases; the RDBMS-type-row-column data in MySql and the NoSql-JSON type data in Cassandra.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,39 +23,30 @@
 		<postgresql.version>42.2.12</postgresql.version>
 		<mysql.version>8.0.20</mysql.version>
 		<cassandra-driver-core.version>3.7.1</cassandra-driver-core.version>
-		<commons.dbcp.version>1.4</commons.dbcp.version>
 		<springfox.swagger2.version>2.9.2</springfox.swagger2.version>
-		
-		<javafaker.version>0.15</javafaker.version>	
 	</properties>
 
 	<dependencies>
-	
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>${javafaker.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<!-- BEGIN: Spring-Batch -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
 		<!-- END: Spring-Batch -->
-		
+
 		<!-- BEGIN: Spring-Data-JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<!-- END: Spring-Data-JPA -->
-		
+
 		<!-- BEGIN: PostgreSQL -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -63,7 +54,7 @@
 			<version>${postgresql.version}</version>
 		</dependency>
 		<!-- END: PostgreSQL -->
-		
+
 		<!-- BEGIN: MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -71,7 +62,7 @@
 			<version>${mysql.version}</version>
 		</dependency>
 		<!-- END: MySQL -->
-		
+
 		<!-- BEGIN: Cassandra -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,14 +74,14 @@
 			<version>${cassandra-driver-core.version}</version>
 		</dependency>
 		<!-- END: Cassandra -->
-		
+
 		<!-- BEGIN: Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-		<!-- END: Lombok -->	
-		
+		<!-- END: Lombok -->
+
 		<!-- BEGIN: Swagger -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -103,8 +94,9 @@
 			<version>${springfox.swagger2.version}</version>
 		</dependency>
 		<!-- END: Swagger -->
-		
-		<!-- Adding this to remove error: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is com.google.common.util.concurrent.ExecutionError: java.lang.NoSuchMethodError: -->
+
+		<!-- Adding this to remove error: Failed to start bean 'documentationPluginsBootstrapper'; 
+			nested exception is com.google.common.util.concurrent.ExecutionError: java.lang.NoSuchMethodError: -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

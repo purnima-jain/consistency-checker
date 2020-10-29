@@ -15,8 +15,7 @@ public class CustomerIdSelectionReader {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomerIdSelectionReader.class);
 
-	// private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // MySQL DateTime Format
-	// is YYYY-MM-DD HH:MM:SS
+	// private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // MySQL DateTime Format is YYYY-MM-DD HH:MM:SS
 
 	@Autowired
 	@Qualifier("mySqlDataSource")

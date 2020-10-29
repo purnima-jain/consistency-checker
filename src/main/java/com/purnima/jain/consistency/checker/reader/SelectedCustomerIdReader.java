@@ -41,7 +41,7 @@ public class SelectedCustomerIdReader {
 		reader.setPageSize(customerIdBatchSize);
 		reader.setQueryProvider(queryProvider(this.postgresDataSource, jobInstanceId));
 		reader.setRowMapper(new ConsistencyCheckerInternalDtoRowMapper());
-		
+
 		reader.setPageReader(secondaryReader);
 
 		return reader;
@@ -73,6 +73,5 @@ class ConsistencyCheckerInternalDtoRowMapper implements RowMapper<ConsistencyChe
 		consistencyCheckerInternalDto.setCustomerId(rs.getString("CUSTOMER_ID"));
 		return consistencyCheckerInternalDto;
 	}
-	
-}
 
+}

@@ -25,16 +25,4 @@ public class MySqlConfig {
 		return new NamedParameterJdbcTemplate(mySqlDataSource);
 	}
 
-//	@Bean
-//	public DataSourceInitializer mySqldataSourceInitializer(@Qualifier("mySqlDataSource") DataSource mySqlDataSource) {
-//		ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-//		resourceDatabasePopulator.addScript(new ClassPathResource("mysql/schema-mysql.sql"));
-//		resourceDatabasePopulator.addScript(new ClassPathResource("mysql/data-mysql.sql"));
-//
-//		DataSourceInitializer mySqldataSourceInitializer = new DataSourceInitializer();
-//		mySqldataSourceInitializer.setDataSource(mySqlDataSource);
-//		mySqldataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
-//		return mySqldataSourceInitializer;
-//	}
-
 }
